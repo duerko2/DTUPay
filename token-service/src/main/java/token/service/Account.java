@@ -1,4 +1,4 @@
-package behaviourtests;
+package token.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,7 +71,9 @@ public class Account implements Serializable {
 		this.tokens = tokens;
 	}
 
-
+	private class AccountType {
+		public String type;
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Account)) {

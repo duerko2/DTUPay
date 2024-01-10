@@ -1,4 +1,4 @@
-package behaviourtests;
+package payment.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,15 +71,7 @@ public class Account implements Serializable {
 		this.tokens = tokens;
 	}
 
-
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Account)) {
-			return false;
-		}
-		var c = (Account) o;
-
-		// check that account id is same
-		return accountId != null && accountId.equals(c.getAccountId());
+	private class AccountType {
+		public String type;
 	}
 }

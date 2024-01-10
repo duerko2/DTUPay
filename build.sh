@@ -13,6 +13,10 @@ pushd token-service
 ./build.sh
 popd 
 
-pushd account-registration-service
+pushd account-service
 ./build.sh
-popd 
+popd
+
+pushd payment-service
+./build.sh
+popd

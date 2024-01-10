@@ -7,8 +7,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.Event;
 import messaging.MessageQueue;
-import studentid.service.Account;
-import studentid.service.TokenService;
+import token.service.Account;
+import token.service.TokenService;
 
 import java.util.concurrent.CompletableFuture;
 
