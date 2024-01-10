@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import io.cucumber.java.an.E;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.Event;
@@ -23,6 +24,11 @@ public class TokenServiceSteps {
 	Account expected;
 	private CompletableFuture<Account> TokenizedAccount;
 	Payment payment;
+
+	TokenService tokenService;
+	String prevRFID;
+
+
 
 	@When("a {string} event for an account is received")
 	public void aEventForAnAccountIsReceived(String eventName) {
@@ -69,8 +75,38 @@ public class TokenServiceSteps {
 	@Then("the token is deleted")
 	public void the_token_is_deleted() {
 		// Write code here that turns the phrase above into concrete actions'
-		TokenRepo tokenRepo = s.getTokenRepo();
+		assertNotEquals(prevRFID, account.getTokens().get(0).getRfid());
 	}
+	@Given("a valid payment with a valid token that exist")
+	public void aValidPaymentWithAValidTokenThatExist( String eventName) {
+		payment = new Payment();
+		account = new Account();
+		// Bond..
+		account.setName("James");
+		account.setLastname("Bond");
+		account.setCpr("007");
+		account.setAccountId("123");
+
+		account = s.handleInitialTokenEvent(new Event(eventName, new Object[]{account}));
+
+		payment.setToken(account.getTokens().get(0));
+		payment.setAmount(100);
+		payment.setMerchantId("merchant");
+
+	}
+
+
+	@When("a {string} for a payment")
+	public void aForAPayment(String eventName) {
+		prevRFID = account.getTokens().get(0).getRfid();
+		s.handlePaymentRequestSent(new Event(eventName));
+
+
+
+
+	}
+
+
 }
 
 
