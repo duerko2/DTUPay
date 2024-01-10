@@ -71,40 +71,34 @@ public class TokenServiceSteps {
 
 	}
 
+	@Given("a valid payment with a valid token that exist")
+	public void aValidPaymentWithAValidTokenThatExist() {
+		payment = new Payment();
+		payment.setToken(account.getTokens().get(0));
+		payment.setAmount(100);
+		payment.setMerchantId("merchant");
+		payment.setAccountId(account.getAccountId());
+		payment.setCustomerBankId("customerBankId");
+		payment.setMerchantBankId("merchantBankId");
+	}
+
+	@When("a {string} for a payment")
+	public void aForAPayment(String eventName) {
+		prevRFID = account.getTokens().get(0).getRfid();
+		//TODO:: this gives test error "Cannot load from object array because "this.arguments" is null"
+		s.handlePaymentRequestSent(new Event(eventName, new Object[]{payment}));
+
+	}
 
 	@Then("the token is deleted")
 	public void the_token_is_deleted() {
 		// Write code here that turns the phrase above into concrete actions'
 		assertNotEquals(prevRFID, account.getTokens().get(0).getRfid());
 	}
-	@Given("a valid payment with a valid token that exist")
-	public void aValidPaymentWithAValidTokenThatExist( String eventName) {
-		payment = new Payment();
-		account = new Account();
-		// Bond..
-		account.setName("James");
-		account.setLastname("Bond");
-		account.setCpr("007");
-		account.setAccountId("123");
-
-		account = s.handleInitialTokenEvent(new Event(eventName, new Object[]{account}));
-
-		payment.setToken(account.getTokens().get(0));
-		payment.setAmount(100);
-		payment.setMerchantId("merchant");
-
-	}
-
-
-	@When("a {string} for a payment")
-	public void aForAPayment(String eventName) {
-		prevRFID = account.getTokens().get(0).getRfid();
-		s.handlePaymentRequestSent(new Event(eventName));
 
 
 
 
-	}
 
 
 }
