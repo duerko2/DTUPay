@@ -72,4 +72,8 @@ public class TokenService {
 		Event event = new Event("PaymentRequestValidated", new Object[]{payment});
 		queue.publish(event);
 	}
+	public TokenRepo getTokenRepo(){
+		return tokenRepo;
+	}
+
 }

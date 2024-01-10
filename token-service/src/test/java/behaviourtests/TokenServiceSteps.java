@@ -1,13 +1,17 @@
 package behaviourtests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import io.cucumber.java.an.E;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import messaging.Event;
 import messaging.MessageQueue;
 import token.service.Account;
+import token.service.Payment;
+import token.service.TokenRepo;
 import token.service.TokenService;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +22,7 @@ public class TokenServiceSteps {
 	Account account;
 	Account expected;
 	private CompletableFuture<Account> TokenizedAccount;
+	Payment payment;
 
 	@When("a {string} event for an account is received")
 	public void aEventForAnAccountIsReceived(String eventName) {
@@ -31,7 +36,7 @@ public class TokenServiceSteps {
 
 		//System.out.println(account);
 
-		account = s.handleInitialTokenEvent(new Event(eventName,new Object[] {account}));
+		account = s.handleInitialTokenEvent(new Event(eventName, new Object[]{account}));
 	}
 
 	@Then("the {string} event is sent")
@@ -42,7 +47,7 @@ public class TokenServiceSteps {
 		expected.setCpr("007");
 		expected.setAccountId("123");
 
-		var event = new Event(eventName, new Object[] {expected});
+		var event = new Event(eventName, new Object[]{expected});
 		verify(queue).publish(event);
 	}
 
@@ -51,5 +56,22 @@ public class TokenServiceSteps {
 		assertEquals(int1, account.getTokens().size());
 	}
 
+
+
+
+	@Then("the {string}")
+	public void the(String string) {
+		// Write code here that turns the phrase above into concrete actions
+
+	}
+
+
+	@Then("the token is deleted")
+	public void the_token_is_deleted() {
+		// Write code here that turns the phrase above into concrete actions'
+		TokenRepo tokenRepo = s.getTokenRepo();
+	}
 }
+
+
 
