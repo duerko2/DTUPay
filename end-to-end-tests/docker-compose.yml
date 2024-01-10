@@ -1,0 +1,21 @@
+version: '3'
+services:
+  rabbitMq:
+    image: rabbitmq:3-management
+    container_name: rabbitMq_container
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    
+  account-registration-service:
+    image: account-registration-service
+    container_name: account-registration-service
+    ports:
+     - "8080:8080"
+    
+  token-service:
+    image: token-service
+    container_name: token-service
+
+
+ 
