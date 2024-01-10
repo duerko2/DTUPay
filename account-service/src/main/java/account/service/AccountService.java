@@ -15,6 +15,7 @@ public class AccountService {
 	public AccountService(MessageQueue q) {
 		queue = q;
 		queue.addHandler("InitialTokensAssigned", this::handleInitialTokensAssigned);
+		queue.addHandler("BankAccountsAssignmentRequest", this::handleBankAccountsAssignmentRequest);
 	}
 
 	public Account register(Account s) throws AccountAlreadyExists {
@@ -53,6 +54,17 @@ public class AccountService {
 		var s = e.getArgument(0, Account.class);
 		accountRepo.storeAccount(s);
 		registeredAccount.complete(s);
+	}
+
+	public void handleBankAccountsAssignmentRequest(Event e) {
+		var p = e.getArgument(0, Payment.class);
+		var customerBankId = accountRepo.getAccount(p.getCustomerId()).getBankId();
+		var merchantBankId = accountRepo.getAccount(p.getMerchantId()).getBankId();
+		p.setCustomerBankId(customerBankId);
+		p.setMerchantBankId(merchantBankId);
+
+		Event event = new Event("BankAccountsAssigned", new Object[] { p });
+		queue.publish(event);
 	}
 
 	public void deleteAccount(String accountId) {

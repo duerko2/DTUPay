@@ -1,4 +1,4 @@
-package payment.service;
+package account.service;
 
 public class Payment {
 
@@ -65,11 +65,24 @@ public class Payment {
     public void setCustomerBankId(String customerBankId) {
         this.customerBankId = customerBankId;
     }
+
+    @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Payment) {
-            Payment other = (Payment) obj;
-            return other.amount == amount && other.merchantId.equals(merchantId);
+        if (!(obj instanceof Payment)) {
+            return false;
         }
-        return false;
+        var c = (Payment) obj;
+        return merchantId != null && merchantId.equals(c.getMerchantId()) &&
+                amount == c.getAmount() &&
+                token != null && token.equals(c.getToken()) &&
+                customerId != null && customerId.equals(c.getCustomerId()) &&
+                merchantBankId != null && merchantBankId.equals(c.getMerchantBankId()) &&
+                customerBankId != null && customerBankId.equals(c.getCustomerBankId()) ||
+                merchantId == null && c.getMerchantId() == null &&
+                        amount == c.getAmount() &&
+                        token == null && c.getToken() == null &&
+                        customerId == null && c.getCustomerId() == null &&
+                        merchantBankId == null && c.getMerchantBankId() == null &&
+                        customerBankId == null && c.getCustomerBankId() == null;
     }
 }
