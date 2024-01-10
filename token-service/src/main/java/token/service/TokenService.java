@@ -11,16 +11,18 @@ public class TokenService {
 
 	TokenRepo tokenRepo = new TokenRepo();
 	MessageQueue queue;
+
 	public TokenService(MessageQueue q) {
 		this.queue = q;
 		this.queue.addHandler("InitialTokensRequested", this::handleInitialTokenEvent);
 		this.queue.addHandler("PaymentRequestSent", this::handlePaymentRequestSent);
 	}
+
 	public Account handleInitialTokenEvent(Event ev) {
 		var account = ev.getArgument(0, Account.class);
 		// 6 tokens
 		List<Token> tokenList = new ArrayList<>();
-		for(int i = 0; i < 6; i++){
+		for (int i = 0; i < 6; i++) {
 			tokenList.add(generateRandomToken());
 		}
 		addTokensToAccount(account, tokenList);
@@ -41,8 +43,8 @@ public class TokenService {
 		Random r = new Random();
 
 		// Copilot generated this code
-		String randomString = r.ints(48,122)
-				.filter(i-> (i<57 || i>65) && (i <90 || i>97))
+		String randomString = r.ints(48, 122)
+				.filter(i -> (i < 57 || i > 65) && (i < 90 || i > 97))
 				.mapToObj(i -> (char) i)
 				.limit(10)
 				.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
