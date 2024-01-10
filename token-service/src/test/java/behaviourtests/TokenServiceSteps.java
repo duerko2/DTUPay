@@ -85,8 +85,10 @@ public class TokenServiceSteps {
 	@When("a {string} for a payment")
 	public void aForAPayment(String eventName) {
 		prevRFID = account.getTokens().get(0).getRfid();
-		//TODO:: this gives test error "Cannot load from object array because "this.arguments" is null"
-		s.handlePaymentRequestSent(new Event(eventName, new Object[]{payment}));
+		//TODO:: this gives test error that the arguments are different, something wrong with the logic or test of the event
+
+		Object[] arguments = new Object[]{payment};
+		s.handlePaymentRequestSent(new Event(eventName, arguments));
 
 	}
 
