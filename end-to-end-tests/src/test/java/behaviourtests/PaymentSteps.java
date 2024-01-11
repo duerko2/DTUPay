@@ -7,6 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,10 +16,10 @@ public class PaymentSteps {
 
     String customerName = "name";
     String customerLastName = "lastname";
-    String customerCPR = "customerCPR";
+    String customerCPR = "987";
     String merchantName = "merchantName";
     String merchantLastName = "merchantlastname";
-    String merchantCPR = "merchantCPR";
+    String merchantCPR = "654";
     String customerBankId;
     String customerDTUPayId;
     String merchantBankId;
@@ -73,7 +74,7 @@ public class PaymentSteps {
     }
 
     @When("the merchant initiates a payment for {int} kr with the customer token")
-    public void theMerchantInitiatesAPaymentForKrByTheCustomer(int arg0) {
+    public void theMerchantInitiatesAPaymentForKrByTheCustomer(int arg0) throws Throwable {
         Payment p = new Payment();
         p.setAmount(arg0);
         p.setMerchantId(merchantDTUPayId);

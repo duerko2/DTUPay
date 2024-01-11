@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-pushd messaging-utilities-3.3
+pushd messaging-utilities-3.4
 mvn clean
 popd 
 

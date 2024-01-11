@@ -23,5 +23,9 @@ services:
     ports:
       - "9090:9090"
 
+  bank-service:
+    image: bank-service
+    container_name: bank-service
+
 
  

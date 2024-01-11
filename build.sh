@@ -20,3 +20,7 @@ popd
 pushd payment-service
 ./build.sh
 popd
+
+pushd bank-service
+./build.sh
+popd

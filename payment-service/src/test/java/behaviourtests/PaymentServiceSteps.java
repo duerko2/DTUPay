@@ -1,5 +1,6 @@
 package behaviourtests;
 
+import io.cucumber.java.After;
 import io.cucumber.java.en.*;
 import messaging.Event;
 import messaging.MessageQueue;
@@ -33,7 +34,6 @@ public class PaymentServiceSteps {
     private PaymentService service = new PaymentService(q);
     private CompletableFuture<Payment> registeredPayment = new CompletableFuture<>();
 
-
     @Given("there is a payment with {int} token merchantId {string} and amount {int}")
     public void there_is_a_payment_with_token_merchant_id_and_amount(Integer int1, String string, Integer int2) {
         // Write code here that turns the phrase above into concrete actions
@@ -41,7 +41,6 @@ public class PaymentServiceSteps {
         payment.setAmount(int2);
         payment.setMerchantId(string);
         payment.setToken(new Token("123"));
-
     }
 
     @When("the payment is requested")
@@ -59,52 +58,29 @@ public class PaymentServiceSteps {
         // Write code here that turns the phrase above into concrete actions
         Event event = new Event(string, new Object[]{payment});
         assertEquals(event, publishedEvent.join());
-        publishedEvent = new CompletableFuture<>();
     }
 
-    @When("the {string} event is sent with a customerId")
-    public void the_event_is_sent_with_a_customer_id(String string) {
+    @And("the {string} event is sent with a merchantId and customerId and a paymentId")
+    public void theEventIsSentWithAMerchantIdAndCustomerIdAndAPaymentId(String arg0) {
+        // copy of the payment sent
+        Payment expectedPayment = new Payment();
+        expectedPayment.setAmount(payment.getAmount());
+        expectedPayment.setMerchantId(payment.getMerchantId());
+        expectedPayment.setToken(payment.getToken());
 
-        // Mocker token service
-        var p = new Payment();
-        p.setAmount(payment.getAmount());
-        p.setMerchantId(payment.getMerchantId());
-        p.setToken(payment.getToken());
-        p.setCustomerId("customerId");
+        // Mocks the downstream services
+        expectedPayment.setCustomerId("customerId");
+        expectedPayment.setPaymentId("paymentId");
 
-        service.handleTokenValidated(new Event(string, new Object[]{p}));
+        Event event = new Event(arg0, new Object[]{expectedPayment});
+        service.handleBankTransferCompleted(event);
     }
 
-    @Then("the payment is registered and customerId is set")
-    public void the_payment_is_registered_and_customer_id_is_set() {
+    @Then("the payment is stored in the successful payments ledger")
+    public void thePaymentIsStoredInTheSuccessfulPaymentsLedger() {
         // Write code here that turns the phrase above into concrete actions
-
-        assertNotNull(registeredPayment.join().getCustomerId());
-    }
-
-    @When("the {string} event is sent with bankAccountId's for customer and merchant")
-    public void theEventIsSentWithBankAccountIdSForCustomerAndMerchant(String arg0) {
-        // mocks the account service
-        var p = new Payment();
-        p.setAmount(payment.getAmount());
-        p.setMerchantId(payment.getMerchantId());
-        p.setToken(payment.getToken());
-        p.setCustomerId(payment.getCustomerId());
-        p.setCustomerId(payment.getCustomerId());
-
-        p.setCustomerId("customerId");
-
-        p.setCustomerBankId("customerBankId");
-        p.setMerchantBankId("merchantBankId");
-
-        service.handleBankAccountsAssigned(new Event(arg0, new Object[]{p}));
-    }
-
-    @Then("the payment has a bank account assigned for the merchant and the customer")
-    public void thePaymentHasABankAccountAssignedForTheMerchantAndTheCustomer() {
-        // Write code here that turns the phrase above into concrete actions
-        assertNotNull(registeredPayment.join().getCustomerBankId());
-        assertNotNull(registeredPayment.join().getMerchantBankId());
+        Payment result = registeredPayment.join();
+        assertNotNull(result.getPaymentId());
     }
 }
 

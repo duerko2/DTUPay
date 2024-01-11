@@ -8,8 +8,17 @@ public class Payment {
     String customerId;
     String merchantBankId;
     String customerBankId;
+    String paymentId;
 
     public Payment() {
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public int getAmount() {

@@ -15,7 +15,7 @@ public class AccountService {
 	public AccountService(MessageQueue q) {
 		queue = q;
 		queue.addHandler("InitialTokensAssigned", this::handleInitialTokensAssigned);
-		queue.addHandler("BankAccountsAssignmentRequest", this::handleBankAccountsAssignmentRequest);
+		queue.addHandler("PaymentRequestValidated", this::handleBankAccountsAssignmentRequest);
 	}
 
 	public Account register(Account s) throws AccountAlreadyExists {
