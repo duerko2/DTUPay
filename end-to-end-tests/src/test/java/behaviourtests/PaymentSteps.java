@@ -1,11 +1,14 @@
 package behaviourtests;
 
+import dtu.ws.fastmoney.BankService;
+import dtu.ws.fastmoney.BankServiceException_Exception;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -32,10 +35,11 @@ public class PaymentSteps {
     private Token token;
 
     @Given("a customer with a bank account with balance {int}")
-    public void aCustomerWithABankAccountWithBalance(int arg0) {
-        // CreateBankAccount mock
-        customerBankId = "123";
-        assertEquals("123",customerBankId);
+    public void aCustomerWithABankAccountWithBalance(int balance) {
+        // CreateBankAccount
+        customerBankId = dtuPayService.registerBankAccount(customerName , customerLastName, customerCPR, balance );
+
+
     }
 
     @And("that the customer is registered with DTU Pay")
@@ -53,10 +57,9 @@ public class PaymentSteps {
     }
 
     @Given("a merchant with a bank account with balance {int}")
-    public void aMerchantWithABankAccountWithBalance(int arg0) {
+    public void aMerchantWithABankAccountWithBalance(int balance) {
         // CreateBankAccount mock
-        merchantBankId = "456";
-        assertEquals("456",merchantBankId);
+        customerBankId = dtuPayService.registerBankAccount(merchantName , merchantLastName, merchantCPR, balance );
     }
 
     @And("that the merchant is registered with DTU Pay")
@@ -89,12 +92,24 @@ public class PaymentSteps {
     }
 
     @And("the balance of the customer at the bank is {int} kr")
-    public void theBalanceOfTheCustomerAtTheBankIsKr(int arg0) {
+    public void theBalanceOfTheCustomerAtTheBankIsKr(int balance) {
+
+        try {
+            assertEquals(balance ,dtuPayService.getBankAccount( customerBankId).getBalance().intValue());
+        } catch (BankServiceException_Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @And("the balance of the merchant at the bank is {int} kr")
-    public void theBalanceOfTheMerchantAtTheBankIsKr(int arg0) {
+    public void theBalanceOfTheMerchantAtTheBankIsKr(int balance) {
+        try {
+            assertEquals(balance, dtuPayService.getBankAccount(merchantBankId).getBalance().intValue());
+        }catch (BankServiceException_Exception e){
+
+        }
+
     }
 
     @Given("a customer has at least {int} token")
@@ -109,5 +124,15 @@ public class PaymentSteps {
         accountRegistrationService.deleteAccount(customerDTUPayId);
         accountRegistrationService.deleteAccount(merchantDTUPayId);
         // Delete bank accounts
+        try {
+            dtuPayService.deleteBankAccount(customerBankId);
+        }catch (Exception e){
+
+        }
+        try {
+            dtuPayService.deleteBankAccount(merchantBankId);
+        }catch (Exception e){
+
+        }
     }
 }

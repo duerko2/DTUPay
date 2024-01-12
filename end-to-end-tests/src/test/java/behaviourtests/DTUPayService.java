@@ -1,12 +1,15 @@
 package behaviourtests;
 
+import dtu.ws.fastmoney.*;
+import dtu.ws.fastmoney.Account;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class DTUPayService {
 
@@ -28,5 +31,35 @@ public class DTUPayService {
         } else {
             return false;
         }
+    }
+
+    public String registerBankAccount(String customerName, String customerLastName, String customerCPR, int balance) {
+        BankService bank = new BankServiceService().getBankServicePort();
+
+        User user = new User();
+        user.setCprNumber(customerCPR);
+        user.setFirstName(customerName);
+        user.setLastName(customerLastName);
+
+        try {
+
+            return bank.createAccountWithBalance(user, new BigDecimal(balance));
+
+        }catch (BankServiceException_Exception e){
+            return "NO ACCOUNT CREATED" + e.getMessage();
+        }
+
+    }
+
+    public void deleteBankAccount(String bankId) throws BankServiceException_Exception {
+        BankService bank = new BankServiceService().getBankServicePort();
+        bank.retireAccount(bankId);
+    }
+
+    public dtu.ws.fastmoney.Account getBankAccount(String customerBankId) throws BankServiceException_Exception {
+
+        BankService bank  = new  BankServiceService().getBankServicePort();
+        return bank.getAccount(customerBankId);
+
     }
 }

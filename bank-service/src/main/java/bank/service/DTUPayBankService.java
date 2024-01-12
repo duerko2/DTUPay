@@ -25,13 +25,18 @@ public class DTUPayBankService {
 
         // Needs to actually transfer the money
 
-        /*bank.transferMoneyFromTo(
-                p.getCustomerBankId(),p.getMerchantBankId(), BigDecimal.valueOf(p.getAmount()),
-                "I don't know what they want from me\n" +
-                        "It's like the more money we come across\n" +
-                        "The more problems we see\n");
+        try {
 
-         */
+            bank.transferMoneyFromTo(
+                    p.getCustomerBankId(), p.getMerchantBankId(), BigDecimal.valueOf(p.getAmount()),
+                    "I don't know what they want from me\n" +
+                            "It's like the more money we come across\n" +
+                            "The more problems we see\n");
+
+        }catch (BankServiceException_Exception e){
+            System.out.println(e.getMessage());
+            return;
+        }
 
         // Publish successful payment event
         p.setPaymentId("123");
