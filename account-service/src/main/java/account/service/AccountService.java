@@ -60,6 +60,8 @@ public class AccountService {
 		var p = e.getArgument(0, Payment.class);
 		var customerBankId = accountRepo.getAccount(p.getCustomerId()).getBankId();
 		var merchantBankId = accountRepo.getAccount(p.getMerchantId()).getBankId();
+		System.out.println("Customer bank id: " + customerBankId);
+		System.out.println("Merchant bank id: " + merchantBankId);
 		p.setCustomerBankId(customerBankId);
 		p.setMerchantBankId(merchantBankId);
 

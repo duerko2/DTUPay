@@ -1,7 +1,6 @@
 package behaviourtests;
 
 import dtu.ws.fastmoney.*;
-import dtu.ws.fastmoney.Account;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

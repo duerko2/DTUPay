@@ -19,10 +19,10 @@ public class PaymentSteps {
 
     String customerName = "name";
     String customerLastName = "lastname";
-    String customerCPR = "987";
+    String customerCPR = "9999999";
     String merchantName = "merchantName";
     String merchantLastName = "merchantlastname";
-    String merchantCPR = "654";
+    String merchantCPR = "1111111";
     String customerBankId;
     String customerDTUPayId;
     String merchantBankId;
@@ -35,11 +35,10 @@ public class PaymentSteps {
     private Token token;
 
     @Given("a customer with a bank account with balance {int}")
-    public void aCustomerWithABankAccountWithBalance(int balance) {
+    public void aCustomerWithABankAccountWithBalance(int balance) throws BankServiceException_Exception {
         // CreateBankAccount
         customerBankId = dtuPayService.registerBankAccount(customerName , customerLastName, customerCPR, balance );
-
-
+        assertEquals(balance ,dtuPayService.getBankAccount(customerBankId).getBalance().intValue());
     }
 
     @And("that the customer is registered with DTU Pay")
@@ -57,9 +56,10 @@ public class PaymentSteps {
     }
 
     @Given("a merchant with a bank account with balance {int}")
-    public void aMerchantWithABankAccountWithBalance(int balance) {
+    public void aMerchantWithABankAccountWithBalance(int balance) throws BankServiceException_Exception {
         // CreateBankAccount mock
-        customerBankId = dtuPayService.registerBankAccount(merchantName , merchantLastName, merchantCPR, balance );
+        merchantBankId = dtuPayService.registerBankAccount(merchantName , merchantLastName, merchantCPR, balance );
+        assertEquals(balance ,dtuPayService.getBankAccount(merchantBankId).getBalance().intValue());
     }
 
     @And("that the merchant is registered with DTU Pay")
