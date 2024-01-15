@@ -69,8 +69,8 @@ public class TokenService {
 		payment.setCustomerId(accountId);
 		System.out.println("Payment request received with token: " + payment.getToken().getRfid() + " and amount: " + payment.getAmount() + " and merchantId: " + payment.getMerchantId() + " and customerId: " + payment.getCustomerId());
 
-		//tokenRepo.deleteToken(payment.getToken());
-		//tokenRepo.addToken(generateRandomToken(),accountId);
+		tokenRepo.deleteToken(payment.getToken());
+		tokenRepo.addToken(generateRandomToken(),accountId);
 
 		Event event = new Event("PaymentRequestValidated", new Object[]{payment});
 		System.out.println("Sending payment request validated event");

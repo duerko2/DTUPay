@@ -170,7 +170,7 @@ public class PaymentSteps {
                 Payment p = new Payment();
                 p.setAmount(arg1);
                 p.setMerchantId(merchantDTUPayId);
-                p.setToken(token);
+                p.setToken(tokens.get(finalI));
 
                 boolean b = dtuPayService.pay(p);
                 if(!b){
