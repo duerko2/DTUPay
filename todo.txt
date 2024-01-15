@@ -14,6 +14,18 @@ Ting vi skal lave
 10. Se event sourcing og CQRS videoen og se hvordan vi kan bruge den
 11. DDD - entity, value objects og aggregates til rapport
 12. Se "solving concurrency problems" video
+13. Implementer timemout regler for hver event
+14. Payment repo (gem payments med deres token)
+15. Reporting funktionalitet (Merchant getReport, customer getReport, og "Manager" getReport)
+16. Token renewal rules
+
+
+Marcus - 12, 13
+Batten - 7,
+Andreas - 10, 3
+Rasmus - 1
+Alexa - 12, 10, 3
+Beier - suck his own ass
 
 
 Deadline 19/01 kl 17:00
