@@ -32,6 +32,7 @@ public class PaymentSteps {
 
     AccountRegistrationService accountRegistrationService = new AccountRegistrationService();
     DTUPayService dtuPayService = new DTUPayService();
+    List<Token> tokens;
     private Token token;
 
     @Given("a customer with a bank account with balance {int}")
@@ -114,7 +115,7 @@ public class PaymentSteps {
 
     @Given("a customer has at least {int} token")
     public void aCustomerHasAtLeastToken(int arg0) throws NoSuchAccountException{
-        List<Token> tokens = accountRegistrationService.getAccount(customerDTUPayId).getTokens();
+        tokens = accountRegistrationService.getAccount(customerDTUPayId).getTokens();
         assertTrue(tokens.size() >= arg0);
         token = tokens.get(0);
     }
@@ -134,5 +135,56 @@ public class PaymentSteps {
         }catch (Exception e){
 
         }
+    }
+    @When("the merchant initiates {int} payments sequentially for {int} kr with a customer token")
+    public void theMerchantInitiatesPaymentsSequentiallyForKrWithACustomerToken(int arg0, int arg1) {
+        for (int i = 0; i < arg0; i++) {
+            System.out.println("i = " + i);
+            token = tokens.get(i);
+            Payment p = new Payment();
+            p.setAmount(arg1);
+            p.setMerchantId(merchantDTUPayId);
+            p.setToken(token);
+
+            successful = dtuPayService.pay(p);
+            if(!successful){
+                return;
+            }
+        }
+    }
+    @Then("all payments are successful")
+    public void allPaymentsAreSuccessful() {
+        assertTrue(successful);
+    }
+
+
+    @When("the merchant initiates {int} payments concurrently for {int} kr with a customer token")
+    public void theMerchantInitiatesPaymentsConcurrentlyForKrWithACustomerToken(int arg0, int arg1) throws InterruptedException {
+        successful = true;
+
+        // start arg0 threads and join them all
+        Thread[] threads = new Thread[arg0];
+        for (int i = 0; i < arg0; i++) {
+            int finalI = i;
+            threads[i] = new Thread(() -> {
+                Payment p = new Payment();
+                p.setAmount(arg1);
+                p.setMerchantId(merchantDTUPayId);
+                p.setToken(token);
+
+                boolean b = dtuPayService.pay(p);
+                if(!b){
+                    successful = false;
+                } else {
+                    System.out.println("Payment in conccurent successful "+ finalI);
+                }
+
+            });
+            threads[i].start();
+        }
+        for (int i = 0; i < arg0; i++) {
+            threads[i].join();
+        }
+
     }
 }

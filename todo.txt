@@ -20,12 +20,13 @@ Ting vi skal lave
 16. Token renewal rules
 
 
-Marcus - 12, 13
+Marcus - 12DONE, 13DONE,
 Batten - 7,
 Andreas - 10, 3
 Rasmus - 1
-Alexa - 12, 10, 3
+Alexa - 12, 10, 3, 14, 16
 Beier - suck his own ass - 4, 5, 14
+
 
 
 Deadline 19/01 kl 17:00

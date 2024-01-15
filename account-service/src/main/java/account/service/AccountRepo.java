@@ -2,10 +2,11 @@ package account.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AccountRepo {
-    Map<String, Account> accountIdToAccountMap = new HashMap<>();
-    Map<String, String> cprToAccountIdMap = new HashMap<>();
+    Map<String, Account> accountIdToAccountMap = new ConcurrentHashMap<>();
+    Map<String, String> cprToAccountIdMap = new ConcurrentHashMap<>();
 
 
     public void storeAccount(Account account) {

@@ -2,12 +2,12 @@ package token.service;
 
 public class Payment {
 
-    String merchantId;
+
     int amount;
     Token token;
+    String merchantId;
     String customerId;
-    String merchantBankId;
-    String customerBankId;
+    String paymentId;
 
     public Payment() {
     }
@@ -38,10 +38,6 @@ public class Payment {
         this.token = token;
     }
 
-    public void setAccountId(String accountId) {
-        this.customerId = accountId;
-    }
-
     public String getCustomerId() {
         return customerId;
     }
@@ -50,25 +46,18 @@ public class Payment {
         this.customerId = customerId;
     }
 
-    public String getMerchantBankId() {
-        return merchantBankId;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setMerchantBankId(String merchantBankId) {
-        this.merchantBankId = merchantBankId;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public String getCustomerBankId() {
-        return customerBankId;
-    }
-
-    public void setCustomerBankId(String customerBankId) {
-        this.customerBankId = customerBankId;
-    }
     public boolean equals(Object obj) {
         if (obj instanceof Payment) {
             Payment other = (Payment) obj;
-            return other.amount == amount && other.merchantId.equals(merchantId);
+            return other.getPaymentId().equals(this.getPaymentId());
         }
         return false;
     }

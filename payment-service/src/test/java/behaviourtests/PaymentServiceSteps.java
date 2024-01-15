@@ -47,9 +47,8 @@ public class PaymentServiceSteps {
     public void the_payment_is_requested() {
         // Write code here that turns the phrase above into concrete actions
         new Thread(() -> {
-            Payment result;
-            result = service.registerPayment(payment);
-            registeredPayment.complete(result);
+            CompletableFuture<Payment> result;
+            registeredPayment = service.registerPayment(payment);
         }).start();
     }
 
@@ -68,9 +67,10 @@ public class PaymentServiceSteps {
         expectedPayment.setMerchantId(payment.getMerchantId());
         expectedPayment.setToken(payment.getToken());
 
+
         // Mocks the downstream services
         expectedPayment.setCustomerId("customerId");
-        expectedPayment.setPaymentId("paymentId");
+        expectedPayment.setPaymentId(payment.getPaymentId());
 
         Event event = new Event(arg0, new Object[]{expectedPayment});
         service.handleBankTransferCompleted(event);

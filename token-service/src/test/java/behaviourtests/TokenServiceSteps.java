@@ -76,14 +76,17 @@ public class TokenServiceSteps {
 		payment.setAmount(100);
 		payment.setMerchantId("merchant");
 		payment.setToken(token);
+		payment.setPaymentId("123");
 
 	}
 	@When("a {string} for a payment")
-	public void aForAPayment(String eventName) {
+	public void aForAPayment(String eventName) throws InterruptedException {
 
 		Object[] arguments = new Object[]{payment};
 		s.handlePaymentRequestSent(new Event(eventName, arguments));
 
+		// simulate downstream service
+		Thread.sleep(500);
 	}
 
 	@Then("the token is deleted")
@@ -99,8 +102,9 @@ public class TokenServiceSteps {
 		expectedPayment.setMerchantId(payment.getMerchantId());
 		expectedPayment.setToken(payment.getToken());
 		expectedPayment.setAmount(payment.getAmount());
+		expectedPayment.setPaymentId(payment.getPaymentId());
 
-		expectedPayment.setAccountId("customer");
+		expectedPayment.setCustomerId("customer");
 
 		var event = new Event(eventName, new Object[]{expectedPayment});
 		verify(queue).publish(event);

@@ -28,6 +28,7 @@ public class DTUPayService {
         if (response.getStatus() == 200) {
             return true;
         } else {
+            System.out.println("response.getStatus() = " + response.getStatus());
             return false;
         }
     }
