@@ -3,17 +3,17 @@ Ting vi skal lave
 
 
 1. Negative tests all around. End to end and service level
-2. Find ud af hvad Hubert mener med "refund payment"
+2. Find ud af hvad Hubert mener med "refund payment" ✔️
 3. Jenkins for det her projekt
 4. Skal vi have flere git repos? (Måske nogle skal se Huberts "project structure" video
 5. Tænk over repo data struktur. Er maps det bedste altid?
 6. Report
-7. Swagger/OpenAPI
+7. Swagger/OpenAPI ✔️
 8. Mere event storming
 9. Dokumenter "bounded context" og vores taksonomi- vigtigt for rapporten tror jeg, hilsen Marcus
-10. Se event sourcing og CQRS videoen og se hvordan vi kan bruge den
+10. Se event sourcing og CQRS videoen og se hvordan vi kan bruge den ✔️
 11. DDD - entity, value objects og aggregates til rapport
-12. Se "solving concurrency problems" video
+12. Se "solving concurrency problems" video ✔️
 13. Implementer timemout regler for hver event
 14. Payment repo (gem payments med deres token)
 15. Reporting funktionalitet (Merchant getReport, customer getReport, og "Manager" getReport)
