@@ -47,7 +47,7 @@ public class BankServiceSteps {
 
     @Then("the request has been sent to the {string} bank service")
     public void theRequestHasBeenSentToTheBankService(String arg0) throws BankServiceException_Exception {
-        verify(bank).transferMoneyFromTo(payment.getCustomerBankId(),payment.getMerchantBankId(), BigDecimal.valueOf(payment.getAmount()),"");
+        verify(bank).transferMoneyFromTo(payment.getCustomerBankId(),payment.getMerchantBankId(), BigDecimal.valueOf(payment.getAmount()),"paymentDesc");
     }
 
     @Then("a {string} event is published")

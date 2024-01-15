@@ -28,7 +28,7 @@ public class DTUPayBankService {
         try {
 
             bank.transferMoneyFromTo(
-                    p.getCustomerBankId(), p.getMerchantBankId(), BigDecimal.valueOf(p.getAmount()), "");
+                    p.getCustomerBankId(), p.getMerchantBankId(), BigDecimal.valueOf(p.getAmount()), "paymentDesc");
 
         }catch (BankServiceException_Exception e){
             System.out.println(e.getMessage());
