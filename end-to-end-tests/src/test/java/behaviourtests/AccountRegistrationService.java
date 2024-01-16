@@ -6,10 +6,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
 public class AccountRegistrationService {
+	Client client = ClientBuilder.newClient();
+	WebTarget r = client.target("http://localhost:8080/");
 
 	public Account register(Account c) throws AccountAlreadyExists {
-		Client client = ClientBuilder.newClient();
-		WebTarget r = client.target("http://localhost:8080/");
+
 
 		var response = r.path("accounts").request().post(Entity.entity(c, "application/json"));
 
@@ -27,14 +28,12 @@ public class AccountRegistrationService {
 		if(accountId==null){
 			return;
 		}
-		Client client = ClientBuilder.newClient();
-		WebTarget r = client.target("http://localhost:8080/");
+
 		r.path("accounts").path(accountId).request().delete();
 	}
 
 	public Account getAccount(String accountId) throws NoSuchAccountException {
-		Client client = ClientBuilder.newClient();
-		WebTarget r = client.target("http://localhost:8080/");
+
 		var response = r.path("accounts").path(accountId).request().get();
 		if(response.getStatus() == 200) {
 			return response.readEntity(Account.class);

@@ -18,9 +18,10 @@ Ting vi skal lave
 14. Payment repo (gem payments med deres token)
 15. Reporting funktionalitet (Merchant getReport, customer getReport, og "Manager" getReport)
 16. Token renewal rules
+17. Concurrent payments ✔️
 
 
-Marcus - 12DONE, 13DONE,
+Marcus - 12✔️,️13, 17✔️
 Batten - 7,
 Andreas - 10, 3
 Rasmus - 1

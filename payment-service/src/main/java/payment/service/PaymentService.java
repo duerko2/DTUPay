@@ -11,6 +11,7 @@ public class PaymentService {
 	private MessageQueue queue;
 	PaymentRepo paymentRepo = new PaymentRepo();
 
+
 	public PaymentService(MessageQueue queue) {
 		this.queue = queue;
 		queue.addHandler("PaymentSuccessful", this::handleBankTransferCompleted);
@@ -19,22 +20,19 @@ public class PaymentService {
 	public CompletableFuture<Payment> registerPayment(Payment payment) {
 		CompletableFuture<Payment> completedPayment = new CompletableFuture<>();
 
+		// Generate payment id
 		String id = UUID.randomUUID().toString();
 		payment.setPaymentId(id);
 
 		// Add payment request to repo
-		System.out.println("Adding payment to repo");
-		System.out.println("Id: "+ id);
 		paymentRepo.addFuturePayment(id, completedPayment);
 
 		// Event to token service
 		Event tokenEvent = new Event("PaymentRequestSent", new Object[] {payment});
 
-		System.out.println("Sending payment request to token service");
-		System.out.println("amount: "+ payment.getAmount());
-
 		queue.publish(tokenEvent);
 
+		// Return the completable future to the resource
 		return completedPayment.orTimeout(10, java.util.concurrent.TimeUnit.SECONDS);
 	}
 

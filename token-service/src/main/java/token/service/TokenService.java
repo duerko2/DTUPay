@@ -61,19 +61,17 @@ public class TokenService {
 
 	public void handlePaymentRequestSent(Event ev) {
 		var payment = ev.getArgument(0, Payment.class);
-		new Thread(()->letsgo(payment)).start();
+		new Thread(()-> concurrentHandlePaymentRequest(payment)).start();
 	}
-	public void letsgo(Payment payment){
+	public void concurrentHandlePaymentRequest(Payment payment){
 		var accountId = tokenRepo.getAccountId(payment.getToken());
 
 		payment.setCustomerId(accountId);
-		System.out.println("Payment request received with token: " + payment.getToken().getRfid() + " and amount: " + payment.getAmount() + " and merchantId: " + payment.getMerchantId() + " and customerId: " + payment.getCustomerId());
 
 		tokenRepo.deleteToken(payment.getToken());
 		tokenRepo.addToken(generateRandomToken(),accountId);
 
 		Event event = new Event("PaymentRequestValidated", new Object[]{payment});
-		System.out.println("Sending payment request validated event");
 		queue.publish(event);
 	}
 	public TokenRepo getTokenRepo(){
