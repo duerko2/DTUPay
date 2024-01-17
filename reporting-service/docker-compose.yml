@@ -1,0 +1,6 @@
+version: '3'
+services:
+  reporting-service:
+    image: reporting-service
+    build: .
+ 

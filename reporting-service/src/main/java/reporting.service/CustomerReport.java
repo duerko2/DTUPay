@@ -3,23 +3,8 @@ package reporting.service;
 import java.util.List;
 
 public class CustomerReport {
-    private List<CustomerPaymentDetails> paymentDetails;
+    private List<Payment> paymentList;
+    public List<Payment> getPaymentList() {return paymentList;}
+    public void setPaymentList(List<Payment> paymentList) {this.paymentList = paymentList;}
 
-    class CustomerPaymentDetails {
-        private int amount;
-        private String merchantId;
-        private String tokenId;
-
-        public int getAmount() {return amount;}
-
-        public void setAmount(int amount) {this.amount = amount;}
-
-        public String getMerchantId() {return merchantId;}
-
-        public void setMerchantId(String merchantId) {this.merchantId = merchantId;}
-
-        public String getTokenId() {return tokenId;}
-
-        public void setTokenId(String tokenId) {this.tokenId = tokenId;}
-    }
 }

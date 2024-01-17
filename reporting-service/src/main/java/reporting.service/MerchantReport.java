@@ -4,11 +4,8 @@ import java.util.List;
 
 public class MerchantReport {
 
-    List<MerchantPaymentDetails> paymentDetails;
-
-    class MerchantPaymentDetails{
-        private int amount;
-        private String tokenId;
-    }
+    private List<Payment> paymentList;
+    public List<Payment> getPaymentList() {return paymentList;}
+    public void setPaymentList(List<Payment> paymentList) {this.paymentList = paymentList;}
 
 }
